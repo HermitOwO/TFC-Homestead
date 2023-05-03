@@ -1,40 +1,32 @@
 package com.lumintorious.tfchomestead.common.item;
 
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Supplier;
 import com.lumintorious.tfchomestead.TFCHomestead;
-import com.lumintorious.tfchomestead.common.HomesteadTabs;
-import net.dries007.tfc.common.items.ToolItem;
-import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.*;
+import com.lumintorious.tfchomestead.common.drinks.AgedAlcohol;
+import com.lumintorious.tfchomestead.common.drinks.HomesteadFluid;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import net.dries007.tfc.util.Helpers;
+
+import static net.dries007.tfc.common.TFCItemGroup.*;
+
 public class HomesteadItems {
     public static DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, TFCHomestead.MOD_ID);
+        DeferredRegister.create(ForgeRegistries.ITEMS, TFCHomestead.MOD_ID);
 
-    public static RegistryObject<Item> WALKING_CANE = ITEMS.register(
-            "walking_cane",
-            () -> new ToolItem(
-                    Tiers.WOOD,
-                    0,
-                    0,
-                    TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("tfchomestead", "mineable/walking_cane")),
-                    new Item.Properties().tab(HomesteadTabs.MAIN)
-            )
+    public static final Map<AgedAlcohol, RegistryObject<BucketItem>> FLUID_BUCKETS = Helpers.mapOfKeys(AgedAlcohol.class, fluid ->
+        register("bucket/aged_" + fluid.name(), () -> new BucketItem(HomesteadFluid.AGED_ALCOHOL.get(fluid).source(), new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1).tab(MISC)))
     );
 
-    public static RegistryObject<Item> REFINED_WALKING_CANE = ITEMS.register(
-            "refined_walking_cane",
-            () -> new ToolItem(
-                    Tiers.IRON,
-                    0,
-                    0,
-                    TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("tfchomestead", "mineable/walking_cane")),
-                    new Item.Properties().tab(HomesteadTabs.MAIN)
-            )
-    );
-
+    private static <T extends Item> RegistryObject<T> register(String name, Supplier<T> item)
+    {
+        return ITEMS.register(name.toLowerCase(Locale.ROOT), item);
+    }
 }

@@ -46,10 +46,7 @@ minecraft {
     runs {
         client {
             workingDirectory project.file('run')
-//            args '-mixin.config=firmalife.mixins.json'
 
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
@@ -63,8 +60,6 @@ minecraft {
         server {
             workingDirectory project.file('run')
 
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
 
@@ -174,7 +169,6 @@ jar {
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "lumintorious",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "tfchomestead.mixins.json"
         ])
     }
 }
